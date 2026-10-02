@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceName": "paddywagon - traffic Source",
+  "sourceName": "Paddy-Wagon Traffic Source",
   "lastUpdated": "2026-10-02T01:40:57Z",
   "mods": {
     "paddywagon-traffic": {
-      "displayName": "paddywagon/traffic",
+      "displayName": "Paddy-Wagon Traffic",
       "description": "The Krimzon Guard **paddy wagon** — the armoured prisoner van you chase during Guard at the controls**. It is a real guard vehicle: red dot on the minimap, joins the hunt during an alert, and **can be boarded and driven** — stealing it raises the city alarm exactly like stealing a hellcat or a guard bike.",
       "authors": [
         "whozghiar"
@@ -16,7 +16,7 @@
       "supportedGames": [
         "jak2"
       ],
-      "websiteUrl": "https://github.com/whozghiar/jak-project/tree/jak2/features/paddywagon/traffic",
+      "websiteUrl": "https://github.com/whozghiar/jak2-paddywagon-traffic",
       "versions": [
         {
           "version": "1.0.0",
