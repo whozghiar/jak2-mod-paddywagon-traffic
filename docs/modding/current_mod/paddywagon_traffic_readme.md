@@ -1,8 +1,8 @@
 # Krimzon Guard Paddy Wagon in City Traffic — Mod Readme
 
-> - **Branch:** `jak2/features/paddywagon/traffic`
+> - **Repository:** [`whozghiar/jak2-mod-paddywagon-traffic`](https://github.com/whozghiar/jak2-mod-paddywagon-traffic)
 > - **Game:** Jak II (OpenGOAL)
-> - **Status:** Compiles clean (`CWI.DGO`, `LWIDE{A,B,C}.DGO`, `GAME.CGO`, full `build-game`); awaiting in-game verification after `task extract`
+> - **Status:** Compiles clean (`CWI.DGO`, `LWIDE{A,B,C}.DGO`, `GAME.CGO`, full `build-game`); verified in game
 
 ---
 
@@ -27,15 +27,16 @@ The wagon is **unarmed**. The `paddy-wagon` skeleton has only the joints
 `(when (nonzero? (-> this info)))` guard makes the inherited guard AI pursue
 without ever firing.
 
-This branch is *inspired by* `jak2/features/transport-ag/traffic` (the drivable
+This mod is *inspired by* [`whozghiar/jak2-mod-transport-ag-traffic`](https://github.com/whozghiar/jak2-mod-transport-ag-traffic) (the drivable
 air gunship) and reuses its two structural techniques — the spare traffic slot
 20 and the `extra_art_groups_by_dgo` merc `.fr3` injection — but shares no code
 with it.
 
 ## 1b. Runtime toggle (mandatory procedure)
 
-Per CLAUDE.md's golden rules the mod ships **OFF** and is switched from
-`Debug ▸ Mods ▸ paddywagon-traffic ▸ Enable`.
+Per CLAUDE.md's golden rules the mod ships **OFF** and is switched from the
+in-game Mods menu (**L3 + SELECT**, retail boot included):
+`Mods ▸ paddywagon-traffic ▸ Enable`.
 
 With the flag `#f` the traffic want-count for slot 20 is 0, so the traffic
 engine never constructs a `paddywagon-v`; no code in `paddywagon-v.gc` runs and
@@ -373,7 +374,7 @@ The paddy wagon's merc geometry only ever shipped in `LMEETBRT.DGO`.
 (the `:LMEETBRT.DGO` suffix resolves the texture ids through LMEETBRT's remap
 table — the `lmeetbrt-pris` tpage — without which the van renders white), and
 `paddy-wagon-ag.go` + `tpage-2438.go` are added to the three `lwide*.gd`.
-See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/model_and_entity_level_injection_guide.md).
+See the `custom-actors-levels` skill, [5. Merc `.fr3` injection](../../../.agents/skills/custom-actors-levels/SKILL.md#5-merc-fr3-injection-no-borrow-workflow).
 
 > **Requires a re-extraction** (`task extract`) so the three `.fr3` are rebuilt.
 > Without it the process runs (sounds, collision, riders) but the hull is
@@ -416,7 +417,7 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 11. **Get out and watch it leave:** the abandoned wagon should climb back to the
     air lane and rejoin traffic rather than staying low (see §4d).
 12. **Destroy one:** it explodes like any guard vehicle.
-9. From the REPL:
+13. From the REPL:
    `(send-event *traffic-manager* 'set-object-target-count (traffic-type paddywagon-v) 4)`
    for more of them.
 
@@ -434,7 +435,8 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 - `goal_src/jak2/levels/city/traffic/traffic-manager.gc` — spawn case + gated
   `want-count` + `define-perm *mod-paddywagon-traffic-enable*`.
 - `goal_src/jak2/levels/city/traffic/citizen/guard.gc` — car knock-off anim group.
-- `goal_src/jak2/pc/debug/paddywagon-traffic-menu.gc` *(new)* — Debug ▸ Mods toggle.
+- `goal_src/jak2/pc/features/paddywagon-traffic-menu.gc` *(new)* — `Mods ▸ paddywagon-traffic`
+  toggle in the in-game Mods menu (**L3 + SELECT**); flipping it recycles traffic.
 - `goal_src/jak2/dgos/cwi.gd` — `"paddywagon-v.o"` after `car.o`.
 - `goal_src/jak2/dgos/game.gd` — `"paddywagon-traffic-menu.o"` after `mods-menu.o`.
 - `goal_src/jak2/dgos/lwide{a,b,c}.gd`, `decompiler/config/jak2/jak2_config.jsonc`
@@ -446,11 +448,10 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 
 - **Seen in game (2026-09-10):** the wagon spawns, renders and drives the city
   lanes; the grab rails work (`pilot-edge-grab` accepted, Jak hangs off a flank);
-  boarding works. The turret-crash fix and the flee behaviour compile clean but
-  have **not** been observed in game yet.
-- **The flee behaviour is still unverified in game** — the branch chooser in
-  particular has only been reasoned about, not watched.
-- **Slot 20 is shared with `jak2/features/transport-ag/traffic`.** Both mods
+  boarding works.
+- **Verified in game:** the user has confirmed that the mod has been tested in
+  game, the later turret-crash fix and flee behaviour included.
+- **Slot 20 is shared with [`whozghiar/jak2-mod-transport-ag-traffic`](https://github.com/whozghiar/jak2-mod-transport-ag-traffic).** Both mods
   claim the same last free traffic slot, so as written they are **mutually
   exclusive**. Merging them would require extending `traffic-engine`'s
   `object-type-info-array` (21 → 22), `inactive-object-array` (420 → 440), the
@@ -462,7 +463,7 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
   `seat-array 1 position` `y` in `*paddywagon-v-constants*` — it is the only
   cosmetic figure worth touching; the flight/handling figures must not move (see
   the `cm-offset-joint` warning in
-  [`docs/modding/jak2_lisp_instructions.md`](../jak2_lisp_instructions.md)).
+  [the Lisp wiki, 3.1](../../../.agents/skills/goal-lisp/wiki/jak2.md#31-vehicles-flags-grab-rails-driver-methods)).
 - **`chick` has no arms-crossed pose** (see §4) — she stands at ease.
 - **Zone-dependent prisoner variety** (see §4) — LWIDEB only ever produces a
   `norm` prisoner, because retail ships no other civilian art group there.
@@ -486,8 +487,9 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 
 | Date | Touched/Created Files | Technical Description | Objective |
 | :--- | :--- | :--- | :--- |
+| 2026-10-02 | `docs/modding/current_mod/paddywagon_traffic_readme.md` | **Docs aligned with the code:** header links the `whozghiar/jak2-mod-paddywagon-traffic` repository instead of the old branch, and its status (plus §8) says the mod is verified in game (user-confirmed) instead of awaiting verification; §1b and the key-file list give the toggle as `Mods ▸ paddywagon-traffic ▸ Enable` in the L3 + SELECT Mods menu, file `pc/features/paddywagon-traffic-menu.gc`, instead of `Debug ▸ Mods` / `pc/debug/`; the transport gunship is referenced by its repository `whozghiar/jak2-mod-transport-ag-traffic`; the dead links to the removed `model_and_entity_level_injection_guide.md` and `jak2_lisp_instructions.md` now point to the knowledge base; the last test step is numbered 13. | Documentation matches the shipped code |
+| 2026-09-16 | `traffic-manager.gc` | **Empty-city regression fix.** `reset-actors` calls each active level's `activate-func` in `*level*` SLOT ORDER, so `ctywide-activate` (-> `traffic-start` -> `init-params` -> `reset-and-init`) can run AFTER `lwide-activate` and wipe everything it just installed: `object-type-info-array[0..19].level` back to `#f` (no traffic spawns at all) and `(reset alert-state)` dropping the `target-jak` flag (guards ignore Jak's crimes) plus lwideb's forced war-zone alert. `init-params` now re-runs `lwide-activate` on the active lwide level, after `restore-default-settings`. Latent stock bug, shared by every branch that touches `init-params`. | Haven City keeps its population and its guard alerts after a death / checkpoint restart (AI-assisted) |
 | 2026-09-11 | `levels/city/traffic/vehicle/paddywagon-v.gc` | **Player vehicle flags: `info flags` #xc → #x6c.** Added bit 5 (32) and bit 6 (64) to the retail constants. Bit 5 is `gun?`, read once by `target-pilot`'s `enter-vehicle`; with it clear, boarding ran `(target-gun-end-mode arg1)` and holstered Jak's weapon — set, he keeps it out and fires with R1 while driving, like cara/carb/carc (#x68). Bit 6 gates `switch-zone-high!` / `switch-zone-low!`, which are no-ops without it; those move the vehicle between `flight-level-index` 1 (lift thrusters target `flight-level` + 6144, the `*traffic-height-map*` air lane) and 0 (ground probes, the low lane), and the R2 toggle for them lives in `vehicle::vehicle-method-94` — still reached through this mod's `vehicle-method-94` override. `vehicle::active` :enter sets index 1, so the wagon was permanently stuck in the upper lane. Bit 6 also fixes a latent bug: `player-control` :exit forces index 0 via `vehicle-method-83`, and only `switch-zone-high!` (gated on this bit) restores it, so an abandoned wagon used to stay stuck low. No R1 conflict because the §4c override already removed `vehicle-guard`'s turret block, which also used R1. | Let the player fly the wagon in both city traffic lanes and shoot while driving it. |
 | 2026-09-10 | `levels/city/traffic/vehicle/paddywagon-v.gc` | **Fixed the hijack crash + hardened the theft alert (second in-game feedback round).** (1) **Crash:** stealing the wagon killed the runtime one frame after `pilot-on`, with no GOAL error. Cause: `vehicle-guard::vehicle-method-94` (reached every frame from `player-control` :post → `vehicle-method-124`) aims and fires the hull turret *unguarded*, and `turret-control-method-9` opens with `(-> arg0 node-list data (-> this info joint-index) bone transform)`. This wagon's `turret info` is 0 — the `paddy-wagon` skeleton has no gun joint — so that dereferences null and indexes `node-list` with garbage. The AI path was always safe because `vehicle-guard-method-153` goes through `turret-control-method-11`, which *is* wrapped in `(when (nonzero? (-> this info)) …)`. Retail never hits it: `hellcat` and `guard-bike`, the only pilotable `vehicle-guard`s, both `set-info` their turret, and the mission `paddywagon` is `no-hijack`. Fixed by overriding `vehicle-method-94` to skip `vehicle-guard`'s turret block and call `vehicle::vehicle-method-94` directly. (2) **Alert:** added a `vehicle-method-87` override (one-shot, self-guarded by `rigid-body-object-flag camera`) that sends `increase-alert-level 2` on boarding, so the theft is noticed even when no `crimson-guard-rider` is left aboard to trigger the stock `knocked-off` path. `increase-alert-level` takes a `max` and is gated on the `target-jak` flag, so the two paths cannot fight and it stays inert in scripted missions. | Make the wagon actually drivable, and make stealing it always raise the alarm rather than only when a driver happened to still be aboard. |
 | 2026-09-10 | `levels/city/traffic/vehicle/paddywagon-v.gc` | **Grab rails + flee-under-fire (first in-game feedback round).** (1) Retail `*paddywagon-constants*` ships `:grab-rail-array #f` / no `:grab-rail-count`, so `check-player-get-on`'s `(dotimes (s2-1 (-> this info grab-rail-count)) …)` ran zero times and the `pilot-edge-grab` path — Jak hanging off the side before committing to the theft — could never fire. Added 4 rails (front, both flanks, rear) at `y` 9216, the body's light/window line per the retail headlight/taillight positions. (2) New flee behaviour: `apply-damage` override starts a flee above `*paddywagon-v-flee-damage-threshold*` and records the attacker position; `vehicle-method-120` override boosts `target-speed-offset`, sets `ignore-others` and clears `pursuit-target` + `alert`/`in-pursuit`/`target-in-sight`/`rammed-target` each frame (so `vehicle-guard`'s `hostile` :post falls through `vehicle-guard-method-151` to `vehicle-method-109` and it drives rather than fights); new `paddywagon-v-choose-branch` controller callback picks the nav-branch heading most directly away from `flee-from`; `vehicle-method-134` refuses pursuit targets while fleeing; `vehicle-method-128` resets flee state per traffic life. | A prisoner transport must be approachable the way every other city vehicle is (hang on it, then decide to steal it), and must run from a firefight instead of joining one — it is carrying a civilian. |
 | 2026-09-10 | `levels/city/traffic/vehicle/paddywagon-v.gc` *(new)*<br>`engine/ai/traffic-h.gc`<br>`levels/city/traffic/vehicle/vehicle-h.gc`<br>`engine/entity/entity-h.gc`<br>`decompiler/config/jak2/all-types.gc`<br>`levels/city/traffic/traffic-manager.gc`<br>`levels/city/traffic/citizen/guard.gc`<br>`pc/debug/paddywagon-traffic-menu.gc` *(new)*<br>`dgos/{cwi,game,lwidea,lwideb,lwidec}.gd`<br>`decompiler/config/jak2/jak2_config.jsonc`<br>`levels/city/{ctywide-tasks,protect/protect,slums/kor/hal3-course,kiddogescort/hal4-course}.gc` | **Initial implementation.** New `paddywagon-v` (`vehicle-guard`) on traffic slot 20, reusing retail `paddy-wagon` hull + `*paddywagon-constants*` verbatim except `object-type` → `#x14`; no `no-hijack`, no `'lmeetbrt` re-home, no `choose-branch-callback` override, so it is an ordinary stealable traffic guard vehicle. New `paddywagon-prisoner` (`vehicle-rider`) in retail seat 1 (the rear cage, flags 4 / 180°): rolls `norm`/`fat`/`chick` among the art groups actually resident in the process's lwide level, holds `*-arms-crossed-ja` (idle for chick), re-rolls the retail `setup-masks` wardrobe on every `'traffic-on`, drops the base sine "lean", and refuses `'knocked-off` so it stays caged when Jak steals the van. `vehicle-method-137` override spawns both riders. Merc `.fr3` injection of `paddy-wagon-ag:LMEETBRT.DGO` into the three lwide levels + `paddy-wagon-ag.go`/`tpage-2438.go` in their `.gd`. Mandatory `Debug ▸ Mods ▸ paddywagon-traffic` toggle via `define-perm *mod-paddywagon-traffic-enable*` gating `want-count[20]`. | Put the Krimzon Guard prisoner van into ambient city traffic with a civilian prisoner and a Crimson Guard driver, drivable and stealable under the same conditions as every other guard vehicle — while leaving stock Haven City and the *Escort Brutter* mission untouched when the toggle is OFF. |
-| 2026-09-16 | `traffic-manager.gc` | **Empty-city regression fix.** `reset-actors` calls each active level's `activate-func` in `*level*` SLOT ORDER, so `ctywide-activate` (-> `traffic-start` -> `init-params` -> `reset-and-init`) can run AFTER `lwide-activate` and wipe everything it just installed: `object-type-info-array[0..19].level` back to `#f` (no traffic spawns at all) and `(reset alert-state)` dropping the `target-jak` flag (guards ignore Jak's crimes) plus lwideb's forced war-zone alert. `init-params` now re-runs `lwide-activate` on the active lwide level, after `restore-default-settings`. Latent stock bug, shared by every branch that touches `init-params`. | Haven City keeps its population and its guard alerts after a death / checkpoint restart (AI-assisted) |
