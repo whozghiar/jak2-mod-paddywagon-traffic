@@ -122,14 +122,6 @@ boxy armoured van in the car lanes with a figure standing in the back.
 
 ▶️ **[Watch the demonstration video on YouTube](https://youtu.be/x6uEJcHKudg)**
 
-## ✅ Compliance Checklist
-- [x] **Native non-regression:** with the mod compiled but its toggle OFF, the traffic want-count for slot 20 is 0, so no `paddywagon-v` is ever constructed and no code in `paddywagon-v.gc` runs. The retail `paddywagon` type and the *Escort Brutter* mission are untouched.
-- [x] **Mods menu toggle:** registered via `(mods-menu-register "paddywagon-traffic" ...)` in [`goal_src/jak2/pc/features/paddywagon-traffic-menu.gc`](goal_src/jak2/pc/features/paddywagon-traffic-menu.gc). Accessible via **L3 + SELECT** in retail boot. See [`docs/modding/tools/mods_menu.md`](docs/modding/tools/mods_menu.md).
-- [x] **No direct `default-menu*.gc` edits.**
-- [x] **Symbols prefixed** with the mod slug (`*mod-paddywagon-traffic-enable*`, `mod-paddywagon-traffic-build-menu`, `paddywagon-v*`, `paddywagon-prisoner*`).
-- [ ] **Verified Lisp instructions** used by this mod are present in `docs/modding/jak2_lisp_instructions.md` (landed on `master-dev` via `task modding-land-doc`).
-- [x] **In-code comments** on every new/overridden type, method, state, macro.
-
 ## 📖 Technical Documentation
 For the complete technical breakdown, architecture, and developer notes, refer to:
 - 📄 [`docs/modding/current_mod/paddywagon_traffic_readme.md`](docs/modding/current_mod/paddywagon_traffic_readme.md)
@@ -246,14 +238,6 @@ une silhouette debout à l'arrière.
 [![Vidéo Démonstrative](https://img.youtube.com/vi/x6uEJcHKudg/maxresdefault.jpg)](https://youtu.be/x6uEJcHKudg)
 
 ▶️ **[Voir la vidéo de démonstration sur YouTube](https://youtu.be/x6uEJcHKudg)**
-
-## ✅ Checklist de Conformité
-- [x] **Non-régression native :** mod compilé mais toggle OFF, le quota de trafic du slot 20 vaut 0 : aucun `paddywagon-v` n'est jamais construit et aucun code de `paddywagon-v.gc` ne s'exécute. Le type `paddywagon` d'origine et la mission *Escorter Brutter* sont intacts.
-- [x] **Toggle menu Mods :** enregistré via `(mods-menu-register "paddywagon-traffic" ...)` dans [`goal_src/jak2/pc/features/paddywagon-traffic-menu.gc`](goal_src/jak2/pc/features/paddywagon-traffic-menu.gc). Accessible via **L3 + SELECT** en boot retail. Voir [`docs/modding/tools/mods_menu.md`](docs/modding/tools/mods_menu.md).
-- [x] **Aucune édition directe de `default-menu*.gc`.**
-- [x] **Symboles préfixés** par le slug du mod (`*mod-paddywagon-traffic-enable*`, `mod-paddywagon-traffic-build-menu`, `paddywagon-v*`, `paddywagon-prisoner*`).
-- [ ] **Instructions Lisp vérifiées** utilisées par ce mod présentes dans `docs/modding/jak2_lisp_instructions.md` (déposées sur `master-dev` via `task modding-land-doc`).
-- [x] **Commentaires dans le code** sur chaque type, méthode, état, macro ajouté ou surchargé.
 
 ## 📖 Documentation Technique
 Pour le détail technique complet, l'architecture et les notes de développement :
