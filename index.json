@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "sourceName": "Paddy-Wagon Traffic Source",
-  "lastUpdated": "2026-10-02T12:14:02Z",
+  "lastUpdated": "2026-10-02T13:48:34Z",
   "mods": {
     "paddywagon-traffic": {
       "displayName": "Paddy-Wagon Traffic",
@@ -34,8 +34,8 @@
           }
         }
       ],
-      "coverArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/mods/jak2-paddywagon-traffic/docs/img/mod/mod_cover.png",
-      "thumbnailArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/mods/jak2-paddywagon-traffic/docs/img/mod/mod_cover.png"
+      "coverArtUrl": "https://raw.githubusercontent.com/whozghiar/jak2-paddywagon-traffic/main/docs/img/mod/mod_cover.png",
+      "thumbnailArtUrl": "https://raw.githubusercontent.com/whozghiar/jak2-paddywagon-traffic/main/docs/img/mod/mod_cover.png"
     }
   },
   "texturePacks": {}
