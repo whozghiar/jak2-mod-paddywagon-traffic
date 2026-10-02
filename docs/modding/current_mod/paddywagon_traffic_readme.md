@@ -1,16 +1,12 @@
-# Krimzon Guard Paddy Wagon in City Traffic — Mod Readme / Fourgon Cellulaire dans le Trafic — Readme de Mod
+# Krimzon Guard Paddy Wagon in City Traffic — Mod Readme
 
-> - **Branch / Branche :** `jak2/features/paddywagon/traffic`
-> - **Game / Jeu :** Jak II (OpenGOAL)
-> - **Status / Statut :** Compiles clean (`CWI.DGO`, `LWIDE{A,B,C}.DGO`, `GAME.CGO`, full `build-game`); awaiting in-game verification after `task extract` / Compile proprement ; validation en jeu à faire après `task extract`
-> - [🇬🇧 English Version](#-english-version)
-> - [🇫🇷 Version Française](#-version-française)
+> - **Branch:** `jak2/features/paddywagon/traffic`
+> - **Game:** Jak II (OpenGOAL)
+> - **Status:** Compiles clean (`CWI.DGO`, `LWIDE{A,B,C}.DGO`, `GAME.CGO`, full `build-game`); awaiting in-game verification after `task extract`
 
 ---
 
-## 🇬🇧 English Version
-
-### 1. Overview & Objective
+## 1. Overview & Objective
 
 `paddywagon-v` is a **real ground-traffic vehicle**: a `vehicle-guard` subtype
 (sibling of `hellcat` / `guard-bike` / `cara`) that spawns in Haven City's
@@ -36,7 +32,7 @@ air gunship) and reuses its two structural techniques — the spare traffic slot
 20 and the `extra_art_groups_by_dgo` merc `.fr3` injection — but shares no code
 with it.
 
-### 1b. Runtime toggle (mandatory procedure)
+## 1b. Runtime toggle (mandatory procedure)
 
 Per CLAUDE.md's golden rules the mod ships **OFF** and is switched from
 `Debug ▸ Mods ▸ paddywagon-traffic ▸ Enable`.
@@ -55,7 +51,7 @@ without requiring a city reload.
 The retail `paddywagon` type in `meet-brutter.gc` is **not touched at all**, so
 the *Escort Brutter* mission is bit-for-bit stock whether the mod is on or off.
 
-### 2. Why a new type instead of reusing retail `paddywagon`
+## 2. Why a new type instead of reusing retail `paddywagon`
 
 The retail type cannot be used in free roam, for three independent reasons:
 
@@ -71,7 +67,7 @@ The retail type cannot be used in free roam, for three independent reasons:
 So `paddywagon-v` is a plain traffic `vehicle-guard` that reuses only the retail
 **hull, physics constants and collision shape** — verbatim.
 
-### 3. What `vehicle-guard` gives us for free
+## 3. What `vehicle-guard` gives us for free
 
 | Requirement | Inherited from | Mechanism |
 |---|---|---|
@@ -84,7 +80,7 @@ So `paddywagon-v` is a plain traffic `vehicle-guard` that reuses only the retail
 | Pooling (hide/show/re-seat) | `vehicle-method-127` / `-128` broadcast `'traffic-off` / `'traffic-on` to **every child** | both riders are children, so both follow the pool automatically |
 | Rider positioning | `vehicle-method-119` | places each `rider-array` entry at its seat and applies the seat's `angle` |
 
-### 4. The prisoner
+## 4. The prisoner
 
 `paddywagon-prisoner` is a `vehicle-rider` — the same lightweight,
 seat-parented, nav-mesh-free actor retail uses for car passengers
@@ -165,7 +161,7 @@ groups transcribed from each civilian's own `citizen-init!`
 runs on first spawn **and** on every `'traffic-on`, so each traffic life gets a
 freshly dressed prisoner.
 
-### 4b. Boarding, hanging, and fleeing under fire
+## 4b. Boarding, hanging, and fleeing under fire
 
 **Grab rails.** Retail `*paddywagon-constants*` carries `:grab-rail-array #f`
 and no `:grab-rail-count` — zero rails — because the mission van is `no-hijack`
@@ -231,7 +227,7 @@ Tunables (all REPL-editable): `*paddywagon-v-flee-duration*` (12 s),
 `*paddywagon-v-flee-speed-boost*` (`(meters 15)`),
 `*paddywagon-v-flee-damage-threshold*` (0.1).
 
-### 4c. Two crash-adjacent hazards of an unarmed, pilotable `vehicle-guard`
+## 4c. Two crash-adjacent hazards of an unarmed, pilotable `vehicle-guard`
 
 **The turret crash (fixed).** `paddywagon-v` is the first `vehicle-guard` the
 player can pilot that has **no turret**. The `paddy-wagon` skeleton has no gun
@@ -284,7 +280,7 @@ current and requested level, so the two paths cannot fight; it is also gated
 internally on the `target-jak` alert flag, so it stays inert during scripted
 missions.
 
-### 4d. Making it a proper player vehicle — `info flags` #xc → #x6c
+## 4d. Making it a proper player vehicle — `info flags` #xc → #x6c
 
 Retail `*paddywagon-constants*` carries `:flags #xc` (bits 2 and 3). That was
 enough for a `no-hijack` mission van but not for one the player drives, so the
@@ -346,7 +342,7 @@ override skips `vehicle-guard`'s turret block but keeps the `vehicle` base).
 turret block used R1 too. The §4c override removes that block entirely, so the
 two never compete.
 
-### 5. Traffic-type wiring
+## 5. Traffic-type wiring
 
 - `engine/ai/traffic-h.gc` — renames the spare `(traffic-type-20 20)` →
   `(paddywagon-v 20)`. **Slot 20 is the last usable slot**: every engine loop is
@@ -369,7 +365,7 @@ two never compete.
   kiddogescort/hal4-course}.gc` — the four mission scripts that
   `deactivate-by-type` slot 20 now use the new enum name.
 
-### 6. Rendering — the merc geometry `.fr3` injection
+## 6. Rendering — the merc geometry `.fr3` injection
 
 The paddy wagon's merc geometry only ever shipped in `LMEETBRT.DGO`.
 `extra_art_groups_by_dgo` in `decompiler/config/jak2/jak2_config.jsonc` bakes
@@ -383,7 +379,7 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 > Without it the process runs (sounds, collision, riders) but the hull is
 > **invisible**.
 
-### 7. How to Test
+## 7. How to Test
 
 1. **Extract (once):** `task extract` — rebuilds `lwide*.fr3` with
    `paddy-wagon-ag`. Look for
@@ -446,7 +442,7 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 - `goal_src/jak2/levels/city/{ctywide-tasks, protect/protect,
   slums/kor/hal3-course, kiddogescort/hal4-course}.gc` — enum rename.
 
-### 8. Current State & Known Tradeoffs
+## 8. Current State & Known Tradeoffs
 
 - **Seen in game (2026-09-10):** the wagon spawns, renders and drives the city
   lanes; the grab rails work (`pilot-edge-grab` accepted, Jak hangs off a flank);
@@ -486,7 +482,7 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 
 ---
 
-### 9. Modding Changes Log
+## 9. Modding Changes Log
 
 | Date | Touched/Created Files | Technical Description | Objective |
 | :--- | :--- | :--- | :--- |
@@ -495,454 +491,3 @@ See [`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/mo
 | 2026-09-10 | `levels/city/traffic/vehicle/paddywagon-v.gc` | **Grab rails + flee-under-fire (first in-game feedback round).** (1) Retail `*paddywagon-constants*` ships `:grab-rail-array #f` / no `:grab-rail-count`, so `check-player-get-on`'s `(dotimes (s2-1 (-> this info grab-rail-count)) …)` ran zero times and the `pilot-edge-grab` path — Jak hanging off the side before committing to the theft — could never fire. Added 4 rails (front, both flanks, rear) at `y` 9216, the body's light/window line per the retail headlight/taillight positions. (2) New flee behaviour: `apply-damage` override starts a flee above `*paddywagon-v-flee-damage-threshold*` and records the attacker position; `vehicle-method-120` override boosts `target-speed-offset`, sets `ignore-others` and clears `pursuit-target` + `alert`/`in-pursuit`/`target-in-sight`/`rammed-target` each frame (so `vehicle-guard`'s `hostile` :post falls through `vehicle-guard-method-151` to `vehicle-method-109` and it drives rather than fights); new `paddywagon-v-choose-branch` controller callback picks the nav-branch heading most directly away from `flee-from`; `vehicle-method-134` refuses pursuit targets while fleeing; `vehicle-method-128` resets flee state per traffic life. | A prisoner transport must be approachable the way every other city vehicle is (hang on it, then decide to steal it), and must run from a firefight instead of joining one — it is carrying a civilian. |
 | 2026-09-10 | `levels/city/traffic/vehicle/paddywagon-v.gc` *(new)*<br>`engine/ai/traffic-h.gc`<br>`levels/city/traffic/vehicle/vehicle-h.gc`<br>`engine/entity/entity-h.gc`<br>`decompiler/config/jak2/all-types.gc`<br>`levels/city/traffic/traffic-manager.gc`<br>`levels/city/traffic/citizen/guard.gc`<br>`pc/debug/paddywagon-traffic-menu.gc` *(new)*<br>`dgos/{cwi,game,lwidea,lwideb,lwidec}.gd`<br>`decompiler/config/jak2/jak2_config.jsonc`<br>`levels/city/{ctywide-tasks,protect/protect,slums/kor/hal3-course,kiddogescort/hal4-course}.gc` | **Initial implementation.** New `paddywagon-v` (`vehicle-guard`) on traffic slot 20, reusing retail `paddy-wagon` hull + `*paddywagon-constants*` verbatim except `object-type` → `#x14`; no `no-hijack`, no `'lmeetbrt` re-home, no `choose-branch-callback` override, so it is an ordinary stealable traffic guard vehicle. New `paddywagon-prisoner` (`vehicle-rider`) in retail seat 1 (the rear cage, flags 4 / 180°): rolls `norm`/`fat`/`chick` among the art groups actually resident in the process's lwide level, holds `*-arms-crossed-ja` (idle for chick), re-rolls the retail `setup-masks` wardrobe on every `'traffic-on`, drops the base sine "lean", and refuses `'knocked-off` so it stays caged when Jak steals the van. `vehicle-method-137` override spawns both riders. Merc `.fr3` injection of `paddy-wagon-ag:LMEETBRT.DGO` into the three lwide levels + `paddy-wagon-ag.go`/`tpage-2438.go` in their `.gd`. Mandatory `Debug ▸ Mods ▸ paddywagon-traffic` toggle via `define-perm *mod-paddywagon-traffic-enable*` gating `want-count[20]`. | Put the Krimzon Guard prisoner van into ambient city traffic with a civilian prisoner and a Crimson Guard driver, drivable and stealable under the same conditions as every other guard vehicle — while leaving stock Haven City and the *Escort Brutter* mission untouched when the toggle is OFF. |
 | 2026-09-16 | `traffic-manager.gc` | **Empty-city regression fix.** `reset-actors` calls each active level's `activate-func` in `*level*` SLOT ORDER, so `ctywide-activate` (-> `traffic-start` -> `init-params` -> `reset-and-init`) can run AFTER `lwide-activate` and wipe everything it just installed: `object-type-info-array[0..19].level` back to `#f` (no traffic spawns at all) and `(reset alert-state)` dropping the `target-jak` flag (guards ignore Jak's crimes) plus lwideb's forced war-zone alert. `init-params` now re-runs `lwide-activate` on the active lwide level, after `restore-default-settings`. Latent stock bug, shared by every branch that touches `init-params`. | Haven City keeps its population and its guard alerts after a death / checkpoint restart (AI-assisted) |
-
----
-
-## 🇫🇷 Version Française
-
-### 1. Présentation & Objectif
-
-`paddywagon-v` est un **véritable véhicule du trafic terrestre** : un sous-type
-de `vehicle-guard` (frère du `hellcat` / `guard-bike` / `cara`) qui apparaît
-dans les voies de circulation d'Abriville, suit les branches de navigation de la
-ville, affiche un **point rouge sur la carte**, est **conduit par un Garde
-Grenat**, transporte un **civil prisonnier debout dans sa cage arrière**, peut
-être **pris en main et conduit par le joueur**, et peut être **détruit** comme
-tout véhicule de garde.
-
-**Le voler est un crime** — et cela vient entièrement du code d'origine, pas du
-mod : le chauffeur est un `crimson-guard-rider`, dont le bit 3 des `flags` de
-`vehicle-rider` fait que la branche `'knocked-off` de
-`vehicle-rider-event-handler` exécute
-`(send-event *traffic-manager* 'increase-alert-level 2)` et fait réapparaître un
-`crimson-guard-1` dans la rue. Identique au vol d'un hellcat.
-
-Le fourgon est **non armé**. Le squelette `paddy-wagon` ne possède que les
-joints « steering », « hatch », « main », « prejoint », « align » — aucun joint
-d'arme — donc `turret info` reste à 0 et le garde-fou
-`(when (nonzero? (-> this info)))` de `turret-control-method-11` fait que l'IA
-de garde héritée poursuit sans jamais tirer.
-
-Cette branche s'**inspire** de `jak2/features/transport-ag/traffic` (la
-canonnière aérienne pilotable) et en réutilise les deux techniques structurelles
-— le slot de trafic libre 20 et l'injection merc `.fr3` via
-`extra_art_groups_by_dgo` — mais ne partage aucun code avec elle.
-
-### 1b. Interrupteur runtime (procédure obligatoire)
-
-Conformément aux règles d'or de CLAUDE.md, le mod est livré **désactivé** et
-s'active depuis `Debug ▸ Mods ▸ paddywagon-traffic ▸ Enable`.
-
-Avec le drapeau à `#f`, le quota de trafic du slot 20 vaut 0 : le moteur de
-trafic ne construit jamais de `paddywagon-v` ; aucun code de `paddywagon-v.gc`
-ne s'exécute et aucun `paddywagon-prisoner` n'est jamais créé. Le reste du
-câblage est **inerte plutôt que gardé**, car rien n'est atteignable sans un
-objet de slot 20 : les renommages d'enums, les `case` supplémentaires dans
-`traffic-object-spawn` / `type-from-vehicle-type`, et l'entrée d'animation de
-chute pour l'object-type 20 dans `guard.gc`. Basculer le mod via le menu Mods en jeu
-déclenche immédiatement un recyclage du trafic (`'kill-all` + `'spawn-all`), mettant
-à jour dynamiquement le `want-count` et régénérant les pools de trafic d'Abriville :
-**le toggle s'applique donc immédiatement**, sans nécessiter de rechargement de la ville.
-
-Le type `paddywagon` d'origine dans `meet-brutter.gc` n'est **absolument pas
-touché** : la mission *Escorter Brutter* est identique au jeu d'origine, mod
-activé ou non.
-
-### 2. Pourquoi un nouveau type plutôt que le `paddywagon` d'origine
-
-Le type d'origine est inutilisable en monde ouvert, pour trois raisons
-indépendantes :
-
-| Le `paddywagon` d'origine… | …et pourquoi cela bloque un usage en trafic |
-|---|---|
-| est livré dans `LMEETBRT.DGO` | un niveau de mission emprunté — le type n'est même pas chargé en monde ouvert |
-| `init-skel-and-rigid-body` force `(-> pp level)` à `'lmeetbrt` | l'art serait résolu depuis un niveau non résident : erreur d'art ou véhicule invisible |
-| pose `rigid-body-object-flag no-hijack` | c'est le drapeau que teste la sonde d'embarquement de `vehicle-util.gc` avant même d'afficher l'invite « appuyez sur triangle » — le fourgon de mission est délibérément involable |
-| force `choose-next-branch-no-exit-level` | le fourgon de mission est cloué au graphe de nav d'un seul niveau |
-| `object-type` `#x13` | il usurpe le slot de trafic du hellcat |
-| surcharge `vehicle-method-134` / `-108` / `active` / `hostile` / `die` | le script de poursuite de meet-brutter, pas un comportement de trafic urbain |
-
-`paddywagon-v` est donc un simple `vehicle-guard` de trafic qui ne réutilise que
-la **coque, les constantes physiques et la forme de collision** d'origine — au
-mot près.
-
-### 3. Ce que `vehicle-guard` fournit gratuitement
-
-| Besoin | Hérité de | Mécanisme |
-|---|---|---|
-| Chauffeur Garde Grenat | `vehicle-guard::vehicle-method-137` | fait apparaître un `crimson-guard-rider` au siège 0. Le trafic met `trsflags-01` + `behavior 1` sur tout véhicule du pool → rider caché, révélé sur `'traffic-on`. |
-| Point rouge sur la carte | `vehicle-guard::vehicle-method-128` | `add-icon! *minimap* … 14` — le marqueur rouge de garde. |
-| Suit les voies de la ville | `vehicle-guard-choose-branch`, installé par `vehicle-guard::alloc-and-init-rigid-body-control` | suivi de nav-branch ordinaire |
-| Poursuite hostile en alerte | états `hostile` / `stop-and-shoot` de `vehicle-guard` | le jeu d'origine donne **déjà** `trtflags-0` au slot 20 dans `traffic-engine::restore-default-settings` (ligne ~2918) : il reçoit `'alert-begin` / `'alert-end` et ne se gare jamais |
-| Le joueur monte et conduit | `vehicle::check-player-get-on` | on ne pose simplement **pas** `no-hijack` |
-| Le vol déclenche l'alerte | `'knocked-off` de `vehicle-rider-event-handler` + bit 3 des `flags` du `crimson-guard-rider` | alerte niveau 2 + un `crimson-guard-1` qui apparaît sur place |
-| Pooling (masquage / réassise) | `vehicle-method-127` / `-128` diffusent `'traffic-off` / `'traffic-on` à **tous les enfants** | les deux riders sont des enfants : ils suivent le pool automatiquement |
-| Positionnement des riders | `vehicle-method-119` | place chaque entrée de `rider-array` à son siège et applique l'`angle` du siège |
-
-### 4. Le prisonnier
-
-`paddywagon-prisoner` est un `vehicle-rider` — le même acteur léger, parenté au
-siège et sans nav-mesh que le jeu d'origine utilise pour les passagers de
-voiture (`citizen-norm-rider`) et les pilotes de garde (`crimson-guard-rider`).
-
-**Le siège existait déjà.** Le `*paddywagon-constants*` d'origine déclare
-`seat-count 2` :
-
-| siège | `position` (x, y, z) | `angle` | `flags` | rôle |
-|---|---|---|---|---|
-| 0 | 0, 9420.8, 2457.6 | 0 | 1 | siège chauffeur / joueur |
-| 1 | 0, 819.2, **-13107.2** | `#x8000` = 180° | 4 | **la cage arrière**, dos à la route |
-
-Le siège 1 est exactement l'endroit où la mission meet-brutter dépose le lurker
-capturé (`(get-best-seat-for-vehicle … 4 0)` → `put-rider-in-seat`). Ce mod y
-place un civil à la place. Comme les `flags` du siège valent 4 et ceux du siège
-joueur 1, le `(get-best-seat-for-vehicle … 1 1)` de `target-pilot` ne peut jamais
-mettre Jak dans la cage.
-
-**Tirage du gabarit et pose bras croisés.** Contrairement à
-`citizen-norm-rider` — qui utilise l'art group allégé `citizen-norm-rider-ag`
-dont les seules poses sont idle / bike-stance / car-stance — le prisonnier
-utilise les art groups civils **complets**, seuls porteurs de la pose debout
-bras croisés :
-
-| variante | skeleton group | pose | elt d'art |
-|---|---|---|---|
-| `norm` | `skel-citizen-norm` | `citizen-norm-arms-crossed-ja` | 8 |
-| `fat` | `skel-citizen-fat` | `citizen-fat-arms-crossed-ja` | 8 |
-| `chick` | `skel-citizen-chick` | `citizen-chick-idle-ja` | 10 |
-
-> [!IMPORTANT]
-> **`citizen-chick` n'a réellement aucune animation bras croisés dans le jeu
-> d'origine.** Ses seules poses debout dans `engine/data/art-elts.gc` sont
-> `idle` (10), `shuffle` (26) et `riding-stance` (27). La prisonnière se tient
-> donc au repos. Pour changer cela, éditez `*paddywagon-prisoner-chick-anim*`
-> dans `paddywagon-v.gc` (27 = riding-stance est l'autre choix plausible).
-
-**Variété dépendante de la zone.** `skeleton-group->draw-control` résout un
-modèle via le **niveau du process lui-même** (`(-> (-> proc level) art-group)`),
-et les riders de trafic sont re-domiciliés sur le niveau lwide par
-`(lwide-entity-hack)`. Le jeu d'origine ne livre que :
-
-| niveau | `citizen-norm-ag` | `citizen-fat-ag` | `citizen-chick-ag` |
-|---|---|---|---|
-| LWIDEA | ✅ | ✅ | ✅ |
-| LWIDEB | ✅ | ❌ | ❌ |
-| LWIDEC | ✅ | ❌ | ✅ |
-
-`paddywagon-prisoner-pick-variant` **vérifie donc la résidence d'abord** (via
-`paddywagon-prisoner-art-group-loaded?`, qui lit directement
-`(-> lvl art-group string-array)` plutôt que de passer par
-`art-group-load-check`, dont le chargement disque en build debug ferait diverger
-debug et release) et ne tire que parmi ce qui est réellement disponible, avec
-`norm` en repli garanti. Résultat : les trois gabarits dans la zone LWIDEA,
-norm+chick dans LWIDEC, norm seul dans LWIDEB — ce qui reflète de toute façon
-l'aspect des piétons d'origine dans ces zones.
-
-**Le prisonnier reste en place quand Jak vole le fourgon.** `target-pilot`
-parcourt *tous* les sièges à l'embarquement et envoie `'knocked-off` à leurs
-occupants. C'est correct pour le garde chauffeur ; pas pour un prisonnier. Donc
-`paddywagon-prisoner-event-handler` intercepte `'knocked-off` et renvoie `#f`.
-Cela compte doublement : `target-pilot` ne libère le siège que si `send-event`
-renvoie quelque chose de vrai, donc refuser l'événement garde aussi le
-prisonnier inscrit dans `rider-array`, et donc toujours positionné chaque frame
-par `vehicle-method-119`.
-
-**Pas d'inclinaison.** Le `vehicle-rider-method-34` de base fixe le canal à
-`num-func-identity` et pilote `frame-num` avec un sinus mêlé au braquage du
-véhicule — l'inclinaison d'un conducteur dans un virage. La surcharge le réduit
-à un simple `(ja-post)`, et le `:enter` de l'état `active` installe un
-`:num! (loop!)` ordinaire : le prisonnier se contente de tenir sa pose.
-
-**Garde-robe.** `vehicle-rider-method-33` re-tire les groupes `setup-masks`
-transcrits depuis le `citizen-init!` de chaque civil (`citizen-norm.gc` /
-`citizen-fat.gc` / `citizen-chick.gc`), avec `rand-vu-int-count` à la place de
-la méthode `rnd-int-count` réservée aux `citizen`. Cela s'exécute à la création
-**et** à chaque `'traffic-on` : chaque vie de trafic donne un prisonnier
-fraîchement habillé.
-
-### 4b. Embarquement, suspension et fuite sous le feu
-
-**Rambardes d'accroche.** Le `*paddywagon-constants*` d'origine porte
-`:grab-rail-array #f` et aucun `:grab-rail-count` — zéro rambarde — parce que le
-fourgon de mission est `no-hijack` et que Jak n'est jamais censé y toucher. Tous
-les véhicules urbains volables en ont (cara 6, carb 5, carc 9, hellcat 6, motos
-2). `check-player-get-on` propose un véhicule de deux façons :
-
-| chemin | condition | triangle envoie |
-|---|---|---|
-| embarquement direct | Jak à peu près au niveau de la coque (`floats2 > -14336`) | `change-mode pilot` — il monte |
-| rambarde | Jak à plus de 2 m **sous** l'origine de la coque (`floats2 < -8192`) et pas déjà en edge-grab | `pilot-edge-grab` — il **se suspend au flanc** |
-
-La boucle des rambardes est `(dotimes (s2-1 (-> this info grab-rail-count)) …)` :
-sans rambarde, ce second chemin ne pouvait jamais se déclencher et le fourgon ne
-pouvait pas être agrippé. Ce mod ajoute quatre rambardes (pare-chocs avant, les
-deux flancs, arrière au-dessus des portes de cage) à `y` 9216 — la vraie ligne
-de feux/vitres de la carrosserie, reprise des positions de phares et feux
-arrière du même bloc de constantes. **Ces quatre valeurs sont des estimations** ;
-si Jak se suspend en clippant dans la carrosserie ou en flottant à côté, ce sont
-les seules à ajuster.
-
-**Fuite sous le feu.** Le fourgon transporte un prisonnier : il rompt le contact
-et quitte la zone au lieu de se comporter comme un véhicule de trafic ordinaire.
-
-- Surcharge d'`apply-damage` — `vehicle::apply-damage` est l'entonnoir unique de
-  tous les dégâts (tirs et explosions via la branche d'attaque de
-  `rigid-body-object-method-46`, percussions via la branche d'impulsion de
-  `vehicle.gc`). Tout ce qui atteint `*paddywagon-v-flee-damage-threshold*`
-  (0,1) déclenche une fuite et mémorise la position de Jak dans `flee-from`. Le
-  seuil laisse passer chaque impact de projectile (1,0 / 0,25 / 0,125) tout en
-  ignorant les frottements de pare-chocs du trafic ordinaire. Ignoré quand le
-  joueur le conduit, et une fois le véhicule mort.
-- Surcharge de `vehicle-method-120` — le tick par frame (appelé depuis
-  `vehicle-method-122`, que l'état `active` de `vehicle-guard` exécute dans son
-  :post). En fuite : (a) `controller target-speed-offset` passe à
-  `*paddywagon-v-flee-speed-boost*` (la valeur d'origine est `(meters -2)` — un
-  fourgon roule normalement *sous* la limite de voie), (b) `ignore-others` est
-  posé pour forcer le passage au lieu de faire la queue, et (c) `pursuit-target`
-  ainsi que les drapeaux `alert` / `in-pursuit` / `target-in-sight` /
-  `rammed-target` sont effacés à chaque frame. C'est ce dernier point qui le
-  fait **fuir plutôt que combattre** : `pursuit-target` vidé, le :post de
-  `hostile` de `vehicle-guard` ne trouve plus de cible via
-  `vehicle-guard-method-151` et appelle `vehicle-method-109`, ce qui le remet en
-  conduite de trafic ordinaire. Les deux réglages du contrôleur sont ré-affirmés
-  chaque frame car `vehicle-method-109` efface lui-même `ignore-others`.
-- `paddywagon-v-choose-branch` — le sélecteur de nav-branch du contrôleur,
-  installé dans `init-skel-and-rigid-body`. Il délègue normalement au
-  `vehicle-guard-choose-branch` d'origine ; en fuite il choisit la branche dont
-  le cap s'éloigne le plus directement de `flee-from`, pour que le fourgon
-  quitte réellement la zone au lieu de repasser devant son agresseur. Repli sur
-  le sélecteur d'origine si l'agresseur est collé au véhicule (aucune direction
-  à normaliser). Sûr vis-à-vis du pooling : seul `vehicle-controller-method-9`
-  réinitialise `choose-branch-callback`, et il ne s'exécute qu'une fois dans
-  `alloc-and-init-rigid-body-control`.
-- Surcharge de `vehicle-method-134` — refuse toute cible de poursuite pendant la
-  fuite, sans quoi la branche de percussion de
-  `vehicle-guard::rigid-body-object-method-46` re-désignerait Jak dès qu'il
-  toucherait le fourgon en fuite.
-- Surcharge de `vehicle-method-128` — l'état de fuite est par vie de trafic :
-  une coque recyclée repart calme.
-
-Réglages (tous éditables au REPL) : `*paddywagon-v-flee-duration*` (12 s),
-`*paddywagon-v-flee-speed-boost*` (`(meters 15)`),
-`*paddywagon-v-flee-damage-threshold*` (0,1).
-
-### 4c. Deux pièges d'un `vehicle-guard` pilotable et non armé
-
-**Le crash de la tourelle (corrigé).** `paddywagon-v` est le premier
-`vehicle-guard` pilotable par le joueur à n'avoir **aucune tourelle**. Le
-squelette `paddy-wagon` n'a pas de joint d'arme (seulement « steering »,
-« hatch », « main », « prejoint », « align »), donc `init-skel-and-rigid-body`
-n'appelle jamais `set-info` et `turret info` reste à 0.
-
-Le chemin IA le tolère : `vehicle-guard-method-153` passe par
-`turret-control-method-11`, dont tout le corps est enveloppé dans
-`(when (nonzero? (-> this info)) …)`. C'est pour ça que les paddy wagons IA
-circulent sans problème.
-
-Le chemin **joueur**, non. `vehicle-guard::vehicle-method-94` vise et fait tirer
-la tourelle de coque avant de déléguer à `vehicle::vehicle-method-94` (la vraie
-lecture du stick), sans aucune garde :
-
-```lisp
-(set! (-> this turret inaccuracy) 0.0)
-(turret-control-method-9 (-> this turret) this ...)   ;; chaque frame
-(when (cpad-hold? 0 r1) ... (turret-control-method-17 (-> this turret) this))
-```
-
-et la première chose que fait `turret-control-method-9` est
-
-```lisp
-(-> arg0 node-list data (-> this info joint-index) bone transform)
-```
-
-— un déréférencement d'`info` nul, qui produit un index de joint aberrant ensuite
-utilisé pour indexer `node-list`. Le runtime meurt instantanément, **sans erreur
-GOAL**. La chaîne d'appel est `player-control` :post → `vehicle-method-124` →
-`vehicle-method-94` : ça part dès la première frame après `pilot-on`.
-
-Le jeu d'origine n'y arrive jamais : les deux seuls `vehicle-guard` pilotables,
-`hellcat` (car.gc) et `guard-bike` (bike.gc), appellent tous deux `set-info` sur
-leur tourelle, et le `paddywagon` de mission est `no-hijack`. `paddywagon-v`
-surcharge donc `vehicle-method-94` pour sauter le bloc tourelle de
-`vehicle-guard` et appeler directement `vehicle::vehicle-method-94`. **Si ce
-fourgon reçoit un jour une vraie arme, appelez `set-info` dans
-`init-skel-and-rigid-body` et supprimez cette surcharge.**
-
-**Alerte au vol (fiabilisée).** Voler un véhicule de garde déclenche déjà
-l'alerte via le code d'origine : le chauffeur `crimson-guard-rider` porte le bit
-3 des `flags` de `vehicle-rider`, donc la branche `knocked-off` de
-`vehicle-rider-event-handler` envoie `increase-alert-level 2` à
-`*traffic-manager*` et fait réapparaître un Garde Grenat dans la rue. Mais ce
-chemin exige qu'un chauffeur soit encore à bord pour être éjecté — abattez le
-pilote d'abord, ou prenez un fourgon dont le rider avait déjà été retiré, et le
-vol passe inaperçu. `paddywagon-v` surcharge `vehicle-method-87` (le hook
-d'embarquement one-shot, auto-gardé par `rigid-body-object-flag camera`) pour
-envoyer l'événement lui-même. `traffic-engine::increase-alert-level` prend le
-`max` du niveau courant et du niveau demandé : les deux chemins ne peuvent pas
-se contredire ; il est aussi gardé en interne par le drapeau d'alerte
-`target-jak`, donc il reste inerte pendant les missions scriptées.
-
-### 4d. En faire un vrai véhicule joueur — `info flags` #xc → #x6c
-
-Le `*paddywagon-constants*` d'origine porte `:flags #xc` (bits 2 et 3). Suffisant
-pour un fourgon de mission `no-hijack`, pas pour un véhicule que le joueur
-conduit : le mod le passe à **`#x6c` = 4 | 8 | 32 | 64**.
-
-| bit | valeur | origine | rôle |
-|---|---|---|---|
-| 2 | 4 | retail | en `ai-driving`, se faire tirer dessus fait désigner Jak comme cible de poursuite (`rigid-body-object-method-46`). Conservé — le tick de fuite vide `pursuit-target` chaque frame, donc un tir se solde toujours par une fuite. |
-| 3 | 8 | retail | la coque a une vraie prim collide-MESH : `alloc-and-init-rigid-body-control` lui donne `jak`/`player-list` et Jak peut monter dessus et embarquer. |
-| 5 | 32 | **ajouté** | `gun?` |
-| 6 | 64 | **ajouté** | bascule de couloir de vol |
-
-**Bit 5 — Jak garde son arme.** L'`enter-vehicle` de `target-pilot` le lit une
-fois : `(set! (-> s5-0 gun?) (logtest? (-> vehicle info flags) 32))`, puis
-
-```lisp
-(when (not (-> s5-0 gun?))
-  (if arg1 (logior! (-> self control current-surface flags) (surface-flag gun-fast-exit)))
-  (target-gun-end-mode arg1))
-```
-
-— bit éteint, l'embarquement range l'arme : c'est pour ça que Jak ne pouvait pas
-tirer depuis le fourgon. `target-pilot-init` met bien `gun?` à `#t` au préalable,
-mais `enter-vehicle` l'écrase depuis le drapeau : ce bit est donc l'unique
-interrupteur. cara/carb/carc (`#x68`) sont les véhicules d'origine depuis
-lesquels on peut tirer ; le hellcat (`#x4c`) est l'exemple d'origine où le bit
-est volontairement éteint.
-
-**Bit 6 — la bascule couloir haut / couloir bas.** Il conditionne
-`switch-zone-high!` / `switch-zone-low!` (vehicle-util.gc), qui commencent toutes
-deux par `(when (and (logtest? (-> this info flags) 64) …))` et ne font rien
-sinon. Ces deux méthodes font passer le véhicule entre les deux modes de
-`flight-level-index` implémentés dans vehicle-physics.gc :
-
-- **index 1** — les propulseurs de sustentation visent `flight-level + 6144`,
-  c'est-à-dire le **couloir aérien** de `*traffic-height-map*`, et
-  `on-flight-level` est posé ;
-- **index 0** — les propulseurs utilisent les sondes de sol ordinaires, soit le
-  **couloir bas**.
-
-Le `:enter` de `vehicle::active` met `flight-level-index` à 1 : tout véhicule du
-trafic démarre donc en haut — d'où le fourgon toujours dans le couloir supérieur
-et R2 sans effet. La bascule joueur vit dans `vehicle::vehicle-method-94` :
-
-```lisp
-(when (and (cpad-pressed? 0 r2) (not *pause-lock*))
-  (if (zero? (-> this flight-level-index)) (switch-zone-high! this) (switch-zone-low! this)))
-```
-
-vers laquelle la surcharge `vehicle-method-94` de ce mod continue de router (voir
-§4c : elle saute le bloc tourelle de `vehicle-guard` mais conserve la base
-`vehicle`).
-
-> Poser le bit 6 corrige aussi un bug latent antérieur à la conduite par le
-> joueur : le `:exit` de `player-control` appelle `vehicle-method-83`, qui force
-> `flight-level-index` à 0, et seul `switch-zone-high!` — atteint depuis
-> `vehicle-method-93` et le tick IA de `vehicle-guard`, tous deux conditionnés par
-> ce bit — le remonte. Sans le bit 6, un fourgon abandonné par Jak restait coincé
-> dans le couloir bas pour le reste de sa vie de trafic.
-
-**Budget de touches :** R1 est désormais l'arme de Jak, et le bloc tourelle de
-`vehicle-guard::vehicle-method-94` utilisait R1 aussi. La surcharge du §4c
-supprime ce bloc, les deux ne se disputent donc jamais la touche.
-
-### 5. Câblage du type de trafic
-
-- `engine/ai/traffic-h.gc` — renomme `(traffic-type-20 20)` → `(paddywagon-v 20)`.
-  **Le slot 20 est le dernier slot utilisable** : toutes les boucles du moteur
-  sont des `(dotimes … 21)` et l'`object-type-info-array` de `traffic-engine`
-  fait 21 entrées inline avec un `inactive-object-array` dimensionné à
-  420 = 21 × 20 ; le slot 21 est donc inutilisable sans redimensionner ces
-  structures (et l'`:offset 7024` en dur de `vehicle-tracker-array`). Le jeu
-  d'origine avait déjà câblé le slot 20 comme slot de garde de niveau `ctywide`,
-  tracker véhicule, `trtflags-0` — il n'avait qu'un quota de 0 et aucun handler
-  de spawn.
-- `levels/city/traffic/vehicle/vehicle-h.gc`, `engine/entity/entity-h.gc`,
-  `decompiler/config/jak2/all-types.gc` — ajout de `(vehicle-type paddywagon-v 11)`.
-- `levels/city/traffic/traffic-manager.gc` — `define-perm
-  *mod-paddywagon-traffic-enable*`, les `case` de `traffic-object-spawn` et
-  `type-from-vehicle-type`, et
-  `want-count[20] = (if *mod-paddywagon-traffic-enable* 2 0)`.
-- `levels/city/traffic/citizen/guard.gc` — object-type 20 ajouté au groupe
-  d'animation de chute **voiture** `(14 15 16 19)`, pour qu'un garde éjecté du
-  van utilise l'animation voiture et non celle de moto.
-- `levels/city/{ctywide-tasks, protect/protect, slums/kor/hal3-course,
-  kiddogescort/hal4-course}.gc` — les quatre scripts de mission qui font
-  `deactivate-by-type` sur le slot 20 utilisent le nouveau nom d'enum.
-
-### 6. Rendu — l'injection de géométrie merc `.fr3`
-
-La géométrie merc du fourgon n'a jamais existé que dans `LMEETBRT.DGO`.
-`extra_art_groups_by_dgo` dans `decompiler/config/jak2/jak2_config.jsonc` la
-cuit sous la forme `paddy-wagon-ag:LMEETBRT.DGO` dans `lwidea.fr3` /
-`lwideb.fr3` / `lwidec.fr3` (le suffixe `:LMEETBRT.DGO` résout les ids de
-texture via la table de remap de LMEETBRT — la tpage `lmeetbrt-pris` — sans
-laquelle le van s'affiche en blanc), et `paddy-wagon-ag.go` + `tpage-2438.go`
-sont ajoutés aux trois `lwide*.gd`. Voir
-[`docs/modding/tools/model_and_entity_level_injection_guide.md`](../tools/model_and_entity_level_injection_guide.md).
-
-> **Impose une re-extraction** (`task extract`) pour reconstruire les trois
-> `.fr3`. Sans cela le process tourne (sons, collisions, occupants) mais la
-> coque est **invisible**.
-
-### 7. Procédure de Test
-
-1. **Extraire (une fois) :** `task extract` — reconstruit les `lwide*.fr3` avec
-   `paddy-wagon-ag`. Vérifiez dans le log :
-   `extra_art_groups_by_dgo: baking 'paddy-wagon-ag' into LWIDEA.DGO (.fr3)`.
-2. **Recompiler :** `task repl` puis `(mi)` (nouveaux deftypes + nouveau `.o`
-   dans `cwi.gd` — redémarrez le REPL si `(mi)` proteste).
-3. **Lancer :** `task boot-game`, entrez dans Abriville en monde ouvert.
-4. **Activer :** `Mods ▸ paddywagon-traffic ▸ Enable` (OFF par défaut).
-   Le pool de trafic est immédiatement recyclé en temps réel, faisant apparaître
-   les fourgons sans devoir recharger la ville.
-5. **Ambiant :** roulez — un van blindé anguleux dans les voies de circulation,
-   un Garde Grenat au volant, un civil debout bras croisés dans la cage arrière
-   ouverte, point rouge sur la carte.
-6. **Alerte :** provoquez un garde. Le fourgon rejoint la poursuite comme un
-   hellcat mais ne tire jamais.
-7. **Le voler :** appuyez sur triangle. Le garde est éjecté, **l'alarme de la
-   ville retentit (alerte niveau 2)**, un Garde Grenat réapparaît dans la rue, et
-   le **prisonnier est toujours debout à l'arrière** pendant que vous filez.
-8. **En détruire un :** il explose comme tout véhicule de garde.
-9. Depuis le REPL :
-   `(send-event *traffic-manager* 'set-object-target-count (traffic-type paddywagon-v) 4)`
-   pour en avoir davantage.
-
-### 8. État Actuel & Compromis Connus
-
-- **Vérifié à la compilation seulement.** `CWI.DGO`, `LWIDEA/B/C.DGO`,
-  `GAME.CGO` et le `(build-game)` complet compilent proprement. Le comportement
-  en jeu n'a **pas** encore été observé — cela nécessite `task extract` d'abord.
-- **Le slot 20 est partagé avec `jak2/features/transport-ag/traffic`.** Les deux
-  mods revendiquent le même dernier slot de trafic libre : en l'état ils sont
-  **mutuellement exclusifs**. Les fusionner exigerait d'étendre
-  l'`object-type-info-array` de `traffic-engine` (21 → 22),
-  l'`inactive-object-array` (420 → 440), l'`:offset 7024` en dur de
-  `vehicle-tracker-array`, et chaque `(dotimes … 21)` de `traffic-engine.gc` /
-  `traffic-manager.gc`.
-- **La hauteur du siège 1 (`y` 819.2) est une donnée d'origine calibrée pour le
-  lurker `babak` debout.** Un squelette de citoyen a une hauteur de racine
-  différente : le prisonnier peut donc apparaître légèrement enfoncé dans le
-  plancher de la cage ou flottant au-dessus. Le cas échéant, ajustez le `y` de
-  `seat-array 1 position` dans `*paddywagon-v-constants*` — c'est la seule
-  valeur cosmétique à toucher ; les valeurs de vol/tenue de route ne doivent pas
-  bouger (voir l'avertissement sur `cm-offset-joint` dans
-  [`docs/modding/jak2_lisp_instructions.md`](../jak2_lisp_instructions.md)).
-- **`chick` n'a pas de pose bras croisés** (voir §4) — elle se tient au repos.
-- **Variété du prisonnier dépendante de la zone** (voir §4) — LWIDEB ne produira
-  jamais qu'un prisonnier `norm`, faute d'autre art group civil livré là. Faire
-  apparaître les trois partout impliquerait d'injecter `citizen-fat-ag` /
-  `citizen-chick-ag` dans LWIDEB/LWIDEC, ce qui modifierait la résidence des
-  piétons ordinaires — délibérément hors périmètre.
-- **Non armé par conception** — aucun joint d'arme sur le squelette (voir §1).
-- **Correction sur les couloirs (11/09/2026).** Une révision antérieure de ce
-  document affirmait que le fourgon « roule dans les voies terrestres basses,
-  pas dans la voie aérienne des hellcats, car les `flags` `#xc` ne portent pas le
-  bit 6 ». **C'était faux**, et l'observation en jeu l'a démenti : le `:enter` de
-  `vehicle::active` met `flight-level-index` à 1 sans condition, donc tout
-  véhicule du trafic plane au couloir aérien de `*traffic-height-map*`,
-  indépendamment du bit 6. Le bit 6 ne contrôle que la possibilité de *changer*
-  de couloir via `switch-zone-high!` / `switch-zone-low!`. Sans lui, le fourgon
-  était **coincé** dans le couloir haut, pas maintenu dans le bas. Voir §4d.
