@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
   "sourceName": "paddywagon - traffic Source",
-  "lastUpdated": "2026-09-19T00:22:23Z",
+  "lastUpdated": "2026-10-02T01:40:57Z",
   "mods": {
     "paddywagon-traffic": {
       "displayName": "paddywagon/traffic",
@@ -34,8 +34,8 @@
           }
         }
       ],
-      "coverArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/jak2/features/paddywagon/traffic/docs/img/mod/mod_cover.png",
-      "thumbnailArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/jak2/features/paddywagon/traffic/docs/img/mod/mod_cover.png"
+      "coverArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/mod-repo/jak2-paddywagon-traffic/docs/img/mod/mod_cover.png",
+      "thumbnailArtUrl": "https://raw.githubusercontent.com/whozghiar/jak-project/mod-repo/jak2-paddywagon-traffic/docs/img/mod/mod_cover.png"
     }
   },
   "texturePacks": {}
