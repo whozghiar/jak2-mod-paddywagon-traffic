@@ -27,7 +27,7 @@ joins the hunt during an alert, and **can be boarded and driven** — stealing i
 raises the city alarm exactly like stealing a hellcat or a guard bike.
 
 - **Target Game:** Jak 2
-- **Active Branch:** `jak2/features/paddywagon/traffic`
+- **Repository:** [`whozghiar/jak2-mod-paddywagon-traffic`](https://github.com/whozghiar/jak2-mod-paddywagon-traffic)
 
 ## ✨ Key Features
 
@@ -149,7 +149,7 @@ il **peut être pris en main et conduit** — le voler déclenche l'alarme de la
 ville exactement comme voler un hellcat ou une moto de garde.
 
 - **Jeu Ciblé :** Jak 2
-- **Branche Active :** `jak2/features/paddywagon/traffic`
+- **Dépôt :** [`whozghiar/jak2-mod-paddywagon-traffic`](https://github.com/whozghiar/jak2-mod-paddywagon-traffic)
 
 ## ✨ Fonctionnalités Clés
 
