@@ -1,4 +1,4 @@
-# Paddy Wagon Traffic — Jak 2
+# Paddy-Wagon Traffic — Jak 2
 
 <p align="center">
   <img src="https://img.shields.io/badge/OpenGOAL-Mod-blue.svg" alt="OpenGOAL Mod">
